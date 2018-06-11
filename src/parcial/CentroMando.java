@@ -38,7 +38,12 @@ public class CentroMando {
     }
 
     public void setRecurso1(int recurso1) {
-        this.recurso1 = recurso1;
+        if (recurso1 <= this.tr1) {
+            this.recurso1 = recurso1;
+        } 
+//        else {
+//            System.out.println("Ya no hay capacidad para guardar más recurso");
+//        }
     }
 
     public int getRecurso2() {
@@ -46,7 +51,12 @@ public class CentroMando {
     }
 
     public void setRecurso2(int recurso2) {
-        this.recurso2 = recurso2;
+        if (recurso2 <= this.tr2) {
+            this.recurso2 = recurso2;
+        }
+//       else {
+//            System.out.println("Ya no hay capacidad para guardar más recurso");
+//        }
     }
 
     public int getRecurso3() {
@@ -54,7 +64,12 @@ public class CentroMando {
     }
 
     public void setRecurso3(int recurso3) {
-        this.recurso3 = recurso3;
+        if (recurso3 <= this.tr3) {
+            this.recurso3 = recurso3;
+        } 
+//        else {
+//            System.out.println("Ya no hay capacidad para guardar más recurso");
+//        }
     }
 
     public int getTr1() {

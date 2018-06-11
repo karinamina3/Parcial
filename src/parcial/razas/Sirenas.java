@@ -46,7 +46,11 @@ public class Sirenas implements Razas {
     }
 
     public void setEsmeraldas(int esmeraldas) {
-        this.esmeraldas = esmeraldas;
+        if (esmeraldas <= tope2) {
+            this.esmeraldas = esmeraldas;
+        } else {
+            System.out.println("Ya no hay capacidad para guardar más recurso");
+        }
     }
 
     public int getRubis() {
@@ -54,7 +58,11 @@ public class Sirenas implements Razas {
     }
 
     public void setRubis(int rubis) {
-        this.rubis = rubis;
+        if (rubis <= tope2) {
+            this.rubis = rubis;
+        } else {
+            System.out.println("Ya no hay capacidad para guardar más recurso");
+        }
     }
 
     public int getPerlas() {
@@ -62,7 +70,11 @@ public class Sirenas implements Razas {
     }
 
     public void setPerlas(int perlas) {
-        this.perlas = perlas;
+        if (perlas <= tope2) {
+            this.perlas = perlas;
+        } else {
+            System.out.println("Ya no hay capacidad para guardar más recurso");
+        }
     }
 
 //    public ArrayList<Edificaciones> getEdificaciones() {
@@ -213,7 +225,7 @@ public class Sirenas implements Razas {
 //                                mostrar();
                             }
                         } else {
-                            System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de entranar milicias");
+                            System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de entrenar milicias");
                         }
                         break;
                     case 3:

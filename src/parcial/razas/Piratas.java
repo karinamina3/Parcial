@@ -46,7 +46,7 @@ public class Piratas implements Razas {
     }
 
     public void setOros(int oros) {
-        if (this.oros + oros <= tope1) {
+        if (oros <= tope1) {
             this.oros = oros;
         } else {
             System.out.println("Ya no hay capacidad para guardar más recurso");
@@ -58,7 +58,7 @@ public class Piratas implements Razas {
     }
 
     public void setEspadas(int espadas) {
-        if (this.espadas + espadas <= tope2) {
+        if (espadas <= tope2) {
             this.espadas = espadas;
         } else {
             System.out.println("Ya no hay capacidad para guardar más recurso");
@@ -70,7 +70,7 @@ public class Piratas implements Razas {
     }
 
     public void setMaderas(int maderas) {
-        if (this.maderas + maderas <= tope3) {
+        if (maderas <= tope3) {
             this.maderas = maderas;
         } else {
             System.out.println("Ya no hay capacidad para guardar más recurso");
@@ -370,7 +370,7 @@ public class Piratas implements Razas {
                 for (Edificaciones e : edificaciones) {
                     if (e instanceof GenerarRecurso) {
 //                        System.out.println("Recurso 3 antes: " + getMaderas());
-                        System.out.println("    Generando recurso 3...");
+//                        System.out.println("    Generando recurso 3...");
                         setMaderas(this.maderas + ((GenerarRecurso) e).getRecurso());
                         centro.setRecurso3(centro.getRecurso3() + ((GenerarRecurso) e).getRecurso());
 //                        System.out.println("Recurso 3 después: " + getMaderas());

@@ -46,7 +46,11 @@ public class Hadas implements Razas {
     }
 
     public void setPolvosHadas(int polvosHadas) {
-        this.polvosHadas = polvosHadas;
+        if (polvosHadas <= tope2) {
+            this.polvosHadas = polvosHadas;
+        } else {
+            System.out.println("Ya no hay capacidad para guardar más recurso");
+        }
     }
 
     public int getEstrellas() {
@@ -54,7 +58,11 @@ public class Hadas implements Razas {
     }
 
     public void setEstrellas(int estrellas) {
-        this.estrellas = estrellas;
+        if (estrellas <= tope2) {
+            this.estrellas = estrellas;
+        } else {
+            System.out.println("Ya no hay capacidad para guardar más recurso");
+        }
     }
 
     public int getPociones() {
@@ -62,7 +70,11 @@ public class Hadas implements Razas {
     }
 
     public void setPociones(int pociones) {
-        this.pociones = pociones;
+        if (pociones <= tope2) {
+            this.pociones = pociones;
+        } else {
+            System.out.println("Ya no hay capacidad para guardar más recurso");
+        }
     }
 
 //    public ArrayList<Edificaciones> getEdificaciones() {
@@ -213,7 +225,7 @@ public class Hadas implements Razas {
 //                                mostrar();                                
                             }
                         } else {
-                            System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de entranar milicias");
+                            System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de entrenar milicias");
                         }
                         break;
                     case 3:
