@@ -241,7 +241,7 @@ public class Piratas implements Razas {
         System.out.println("");
         System.out.println("--- Menú Construir ---");
         System.out.println("1. Edificaciones");
-        System.out.println("2. Milicas");
+        System.out.println("2. Milicias");
         System.out.println("3. Vehículos");
         System.out.println("4. Regresar al menú principal");
     }
