@@ -34,4 +34,6 @@ public interface Razas <R> {
     void atacar(R r);
     
     boolean mejorarCentro(double mejora);
+    
+    void generarRecurso();
 }

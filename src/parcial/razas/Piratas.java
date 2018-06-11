@@ -14,6 +14,7 @@ import parcial.FactoryProducer;
 import parcial.edificaciones.ConstruirVehiculos;
 import parcial.edificaciones.Edificaciones;
 import parcial.edificaciones.EntrenarMilicias;
+import parcial.edificaciones.GenerarRecurso;
 import parcial.milicias.Especialistas;
 import parcial.milicias.Milicias;
 import parcial.vehiculos.Vehiculos;
@@ -25,9 +26,10 @@ import parcial.vehiculos.Vehiculos;
 public class Piratas implements Razas {
 
     private final String nombre = "Piratas";
+    int flag = 1;
 
     private int oros = 110, espadas = 90, maderas = 70;
-    private final int tope1 = 10000, tope2 = 5000, tope3 = 3000;
+    private int tope1 = 10000, tope2 = 5000, tope3 = 3000;
     private final CentroMando centro = new CentroMando(100, oros, espadas, maderas, tope1, tope2, tope3);
 
     private AbstractFactory factory;
@@ -44,7 +46,11 @@ public class Piratas implements Razas {
     }
 
     public void setOros(int oros) {
-        this.oros = oros;
+        if (this.oros + oros <= tope1) {
+            this.oros = oros;
+        } else {
+            System.out.println("Ya no hay capacidad para guardar más recurso");
+        }
     }
 
     public int getEspadas() {
@@ -52,7 +58,11 @@ public class Piratas implements Razas {
     }
 
     public void setEspadas(int espadas) {
-        this.espadas = espadas;
+        if (this.espadas + espadas <= tope2) {
+            this.espadas = espadas;
+        } else {
+            System.out.println("Ya no hay capacidad para guardar más recurso");
+        }
     }
 
     public int getMaderas() {
@@ -60,7 +70,23 @@ public class Piratas implements Razas {
     }
 
     public void setMaderas(int maderas) {
-        this.maderas = maderas;
+        if (this.maderas + maderas <= tope3) {
+            this.maderas = maderas;
+        } else {
+            System.out.println("Ya no hay capacidad para guardar más recurso");
+        }
+    }
+
+    public void setTope1(int tope1) {
+        this.tope1 = tope1;
+    }
+
+    public void setTope2(int tope2) {
+        this.tope2 = tope2;
+    }
+
+    public void setTope3(int tope3) {
+        this.tope3 = tope3;
     }
 
 //    public ArrayList<Edificaciones> getEdificaciones() {
@@ -198,7 +224,7 @@ public class Piratas implements Razas {
                                     centro.setRecurso1(centro.getRecurso1() - 55);
                                     centro.setRecurso3(centro.getRecurso3() - 35);
                                 } else {
-                                    System.out.println("No se puede añadir un nuevo especialista");                                    
+                                    System.out.println("No se puede añadir un nuevo especialista");
 //                                mostrar();
                                 }
                             }
@@ -207,11 +233,11 @@ public class Piratas implements Razas {
                                 setOros(this.oros - 55);
                                 setMaderas(this.maderas - 35);
                                 centro.setRecurso1(centro.getRecurso1() - 55);
-                                centro.setRecurso3(centro.getRecurso3() - 35);                                
+                                centro.setRecurso3(centro.getRecurso3() - 35);
 //                                mostrar();                                
                             }
                         } else {
-                            System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de entranar milicias");
+                            System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de Entrenar Milicias");
                         }
                         break;
                     case 3:
@@ -220,7 +246,7 @@ public class Piratas implements Razas {
                             factory = FactoryProducer.getFactory(3);
                             addVehiculos(factory.getVehiculos(construirMiliciasVehiculos(), 40, 3, 20));
                         } else {
-                            System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de construir vehículos");
+                            System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de Construir Vehículos");
                         }
                         break;
                     case 4:
@@ -304,20 +330,24 @@ public class Piratas implements Razas {
 
     @Override
     public boolean mejorarCentro(double mejora) {
-        int recurso = (int) ((0.25 *((tope1 + (tope1 * mejora)) + (tope2 + (tope2 * mejora)) + (tope3 + (tope3 * mejora)))) / 3);        
-        if (this.oros - recurso >= 0 && this.espadas - recurso >= 0 && this.maderas - recurso >= 0){
+        int recurso = (int) ((0.25 * ((tope1 + (tope1 * mejora)) + (tope2 + (tope2 * mejora)) + (tope3 + (tope3 * mejora)))) / 3);
+        if (this.oros - recurso >= 0 && this.espadas - recurso >= 0 && this.maderas - recurso >= 0) {
             int t1 = (int) (tope1 + (tope1 * 0.10));
             int t2 = (int) (tope2 + (tope2 * 0.10));
-            int t3 = (int) (tope3 + (tope3 * 0.10));        
+            int t3 = (int) (tope3 + (tope3 * 0.10));
             centro.setTr1(t1);
             centro.setTr2(t2);
             centro.setTr3(t3);
+            centro.setRecurso1(centro.getRecurso1() - recurso);
+            centro.setRecurso2(centro.getRecurso2() - recurso);
+            centro.setRecurso3(centro.getRecurso3() - recurso);
+            setTope1(t1);
+            setTope2(t2);
+            setTope3(t3);
             setOros(this.oros - recurso);
             setEspadas(this.espadas - recurso);
             setMaderas(this.maderas - recurso);
-            centro.setRecurso1(centro.getRecurso1() - recurso);
-            centro.setRecurso2(centro.getRecurso2() - recurso);
-            centro.setRecurso3(centro.getRecurso3() - recurso);    
+
             return true;
         }
         return false;
@@ -325,7 +355,31 @@ public class Piratas implements Razas {
 
     @Override
     public void atacar(Object r) {
-        System.out.println(r.toString());        
-    }    
-    
+        System.out.println(r.toString());
+    }
+
+    @Override
+    public void generarRecurso() {
+        if (edificaciones.size() == 0) {
+            System.out.println("Cree la edificación antes");
+        } else {
+            if (flag == 0) {
+                System.out.println("Solo se puede generar recurso una vez por fase");
+            }
+            if (flag == 1) {
+                for (Edificaciones e : edificaciones) {
+                    if (e instanceof GenerarRecurso) {
+//                        System.out.println("Recurso 3 antes: " + getMaderas());
+                        System.out.println("    Generando recurso 3...");
+                        setMaderas(this.maderas + ((GenerarRecurso) e).getRecurso());
+                        centro.setRecurso3(centro.getRecurso3() + ((GenerarRecurso) e).getRecurso());
+//                        System.out.println("Recurso 3 después: " + getMaderas());
+                        flag = 0;
+                    } else {
+                        System.out.println("No se puede generar recurso, cree una edificación generar recurso antes");
+                    }
+                }
+            }
+        }
+    }
 }

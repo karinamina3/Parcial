@@ -14,6 +14,7 @@ import parcial.FactoryProducer;
 import parcial.edificaciones.ConstruirVehiculos;
 import parcial.edificaciones.Edificaciones;
 import parcial.edificaciones.EntrenarMilicias;
+import parcial.edificaciones.GenerarRecurso;
 import parcial.milicias.Especialistas;
 import parcial.milicias.Milicias;
 import parcial.vehiculos.Vehiculos;
@@ -25,6 +26,7 @@ import parcial.vehiculos.Vehiculos;
 public class Sirenas implements Razas {
 
     private final String nombre = "Sirenas";
+    int flag = 1;
 
     private int esmeraldas = 120, rubis = 100, perlas = 80;
     private final int tope1 = 10000 , tope2 = 5000, tope3 = 3000;
@@ -331,4 +333,28 @@ public class Sirenas implements Razas {
         }
     }
     
+    @Override
+    public void generarRecurso() {
+        if (edificaciones.size() == 0) {
+            System.out.println("Cree la edificación antes");
+        } else {
+            if (flag == 0) {
+                System.out.println("Solo se puede generar recurso una vez por fase");
+            }
+            if (flag == 1) {
+                for (Edificaciones e : edificaciones) {
+                    if (e instanceof GenerarRecurso) {
+//                        System.out.println("Recurso 3 antes: " + getPerlas());
+                        System.out.println("    Generando recurso 3...");
+                        setPerlas(this.perlas + ((GenerarRecurso) e).getRecurso());
+                        centro.setRecurso3(centro.getRecurso3() + ((GenerarRecurso) e).getRecurso());
+//                        System.out.println("Recurso 3 después: " + getPerlas());
+                        flag = 0;
+                    } else {
+                        System.out.println("No se puede generar recurso, cree una edificación generar recurso antes");
+                    }
+                }
+            }
+        }
+    }
 }
