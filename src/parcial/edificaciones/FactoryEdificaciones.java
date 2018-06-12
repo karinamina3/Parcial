@@ -16,10 +16,10 @@ import parcial.AbstractFactory;
 public class FactoryEdificaciones implements AbstractFactory{
    
     @Override
-    public  Edificaciones getEdificaciones(int tipo, int vida, int fases) {
+    public  Edificaciones getEdificaciones(int tipo, int vida, int fases, int recurso) {
         switch (tipo){
             case 1:
-                return new RecolectarRecurso(vida, fases);
+                return new RecolectarRecurso(vida, fases, recurso);
             case 2:
                 return new GenerarRecurso(vida, fases);
             case 3:

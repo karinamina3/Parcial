@@ -193,7 +193,7 @@ public class Sirenas implements Razas {
                         if (poderConstruirEdificios(60, 40)) {
                             System.out.println("    Escoger tipo de Edificación: 1. Recolectar Recurso, 2. Generar Recurso, 3. Entrenar Milicia, 4. Construir Vehículo");
                             factory = FactoryProducer.getFactory(1);
-                            addEdificaciones(factory.getEdificaciones(construirEdificaciones(), 40, 1));
+                            addEdificaciones(factory.getEdificaciones(cuatroOpciones(), 40, 1));
 //                            mostrar();                            
                         } else {
                             System.out.println("No se puede construir, insuficientes recursos");
@@ -203,7 +203,7 @@ public class Sirenas implements Razas {
                         if (poderConstruirMilicias(60, 40)) {
                             System.out.println("    Escoger tipo de Milicia: 1. Escuadron, 2. Especialistas");
                             factory = FactoryProducer.getFactory(2);
-                            int aux = construirMiliciasVehiculos();
+                            int aux = dosOpciones();
                             if (aux == 2) {
                                 if (poderConstruirEspecialista()) {
                                     addMilicias(factory.getMilicias(aux, 30, 2, 15));
@@ -232,7 +232,7 @@ public class Sirenas implements Razas {
                         if (poderConstruirVehiculos(60, 40)) {
                             System.out.println("    Escoger tipo de Vehículo: 1. Tipo 1 , 2.Tipo 2");
                             factory = FactoryProducer.getFactory(3);
-                            addVehiculos(factory.getVehiculos(construirMiliciasVehiculos(), 35, 2, 15));
+                            addVehiculos(factory.getVehiculos(dosOpciones(), 35, 2, 15));
                         } else {
                             System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de construir vehículos");
                         }
@@ -261,7 +261,7 @@ public class Sirenas implements Razas {
     }
 
     @Override
-    public int construirEdificaciones() {
+    public int cuatroOpciones() {
         int opcion = 5;
         Scanner leer = new Scanner(System.in);
 
@@ -291,7 +291,7 @@ public class Sirenas implements Razas {
     }
 
     @Override
-    public int construirMiliciasVehiculos() {
+    public int dosOpciones() {
         int opcion = 3;
         Scanner leer = new Scanner(System.in);
 

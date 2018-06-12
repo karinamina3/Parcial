@@ -16,7 +16,7 @@ import parcial.AbstractFactory;
 public class FactoryMilicias implements AbstractFactory{
 
     @Override
-    public Edificaciones getEdificaciones(int tipo, int vida, int fases) {
+    public Edificaciones getEdificaciones(int tipo, int vida, int fases, int recurso) {
         return null;
     }
 

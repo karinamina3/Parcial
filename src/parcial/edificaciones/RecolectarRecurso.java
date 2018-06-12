@@ -11,11 +11,12 @@ package parcial.edificaciones;
  */
 public class RecolectarRecurso implements Edificaciones {
 
-    private int vida, fases;
+    private int vida, fases, tipo, recurso = 10;
 
-    public RecolectarRecurso(int vida, int fases) {
+    public RecolectarRecurso(int vida, int fases, int recurso) {        
         this.vida = vida;
         this.fases = fases;
+        this.tipo = recurso;
     }
 
     public int getVida() {
@@ -32,6 +33,22 @@ public class RecolectarRecurso implements Edificaciones {
 
     public void setFases(int fases) {
         this.fases = fases;
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }            
+
+    public int getRecurso() {
+        return recurso;
+    }
+
+    public void setRecurso(int recurso) {
+        this.recurso = recurso;
     }
 
 }

@@ -34,15 +34,16 @@ public class Menu {
         System.out.println("2. Atacar");
         System.out.println("3. Defender");
         System.out.println("4. Mejorar Nivel del Centro de Mando");
-        System.out.println("5. Generar Recursos");
-        System.out.println("6. Terminar turno");
+        System.out.println("5. Recolectar Recursos");
+        System.out.println("6. Generar Recursos");
+        System.out.println("7. Terminar turno");
     }
 
     public void mostrar(Razas raza1, Razas raza2 ) {
-        int opcion = 7;
+        int opcion = 8;
         Scanner leer = new Scanner(System.in);
 
-        while (opcion != 6) {
+        while (opcion != 7) {
             opciones();
             System.out.print(": ");
             try {
@@ -67,9 +68,12 @@ public class Menu {
                         }
                         break;
                     case 5:
-                        raza1.generarRecurso();
+                        raza1.recolectarRecurso();
                         break;
                     case 6:
+                        raza1.generarRecurso();
+                        break;
+                    case 7:
                         break;
                     default:
                         System.out.println("Por favor, ingrese una opción válida");

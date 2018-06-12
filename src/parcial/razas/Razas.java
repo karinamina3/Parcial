@@ -27,13 +27,15 @@ public interface Razas <R> {
 
     void opcionesConstruir();
 
-    int construirEdificaciones();
+    int cuatroOpciones();
 
-    int construirMiliciasVehiculos();
+    int dosOpciones();
     
     void atacar(R r);
     
     boolean mejorarCentro(double mejora);
     
+    void recolectarRecurso();
+            
     void generarRecurso();
 }

@@ -15,6 +15,7 @@ import parcial.edificaciones.ConstruirVehiculos;
 import parcial.edificaciones.Edificaciones;
 import parcial.edificaciones.EntrenarMilicias;
 import parcial.edificaciones.GenerarRecurso;
+import parcial.edificaciones.RecolectarRecurso;
 import parcial.milicias.Especialistas;
 import parcial.milicias.Milicias;
 import parcial.vehiculos.Vehiculos;
@@ -26,12 +27,13 @@ import parcial.vehiculos.Vehiculos;
 public class Piratas implements Razas {
 
     private final String nombre = "Piratas";
-    int flag = 1;
+    int flag = 1, flag2 = 1;
 
     private int oros = 110, espadas = 90, maderas = 70;
     private int tope1 = 10000, tope2 = 5000, tope3 = 3000;
     private final CentroMando centro = new CentroMando(100, oros, espadas, maderas, tope1, tope2, tope3);
 
+    
     private AbstractFactory factory;
     private final ArrayList<Edificaciones> edificaciones = new ArrayList<>();
     private final ArrayList<Milicias> milicias = new ArrayList<>();
@@ -205,7 +207,15 @@ public class Piratas implements Razas {
                         if (poderConstruirEdificios(55, 35)) {
                             System.out.println("    Escoger tipo de Edificación: 1. Recolectar Recurso, 2. Generar Recurso, 3. Entrenar Milicia, 4. Construir Vehículo");
                             factory = FactoryProducer.getFactory(1);
-                            addEdificaciones(factory.getEdificaciones(construirEdificaciones(), 30, 1));
+                            int aux = cuatroOpciones();
+                            int recurso = 0;
+                            if (aux == 1) {
+                                System.out.println(" ¿Cúal recurso quiere recolectar? ¿1 ó 2?");
+                                recurso = dosOpciones();
+                                addEdificaciones(factory.getEdificaciones(aux, 30, 1, recurso));
+                            } else {                                
+                                addEdificaciones(factory.getEdificaciones(aux, 30, 1, recurso));
+                            }
 //                        mostrar();
                         } else {
                             System.out.println("No se puede construir, insuficientes recursos");
@@ -213,9 +223,9 @@ public class Piratas implements Razas {
                         break;
                     case 2:
                         if (poderConstruirMilicias(55, 35)) {
-                            System.out.println("    Escoger tipo de Milicia: 1. Escuadron, 2. Especialistas");
+                            System.out.println("    Escoger tipo de Milicia: 1. Escuadrón, 2. Especialistas");
                             factory = FactoryProducer.getFactory(2);
-                            int aux = construirMiliciasVehiculos();
+                            int aux = dosOpciones();
                             if (aux == 2) {
                                 if (poderConstruirEspecialista()) {
                                     addMilicias(factory.getMilicias(aux, 35, 2, 20));
@@ -244,7 +254,7 @@ public class Piratas implements Razas {
                         if (poderConstruirVehiculos(55, 35)) {
                             System.out.println("    Escoger tipo de Vehículo: 1. Tipo 1, 2. Tipo 2");
                             factory = FactoryProducer.getFactory(3);
-                            addVehiculos(factory.getVehiculos(construirMiliciasVehiculos(), 40, 3, 20));
+                            addVehiculos(factory.getVehiculos(dosOpciones(), 40, 3, 20));
                         } else {
                             System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de Construir Vehículos");
                         }
@@ -273,7 +283,7 @@ public class Piratas implements Razas {
     }
 
     @Override
-    public int construirEdificaciones() {
+    public int cuatroOpciones() {
         int opcion = 5;
         Scanner leer = new Scanner(System.in);
 
@@ -303,7 +313,7 @@ public class Piratas implements Razas {
     }
 
     @Override
-    public int construirMiliciasVehiculos() {
+    public int dosOpciones() {
         int opcion = 3;
         Scanner leer = new Scanner(System.in);
 
@@ -359,27 +369,61 @@ public class Piratas implements Razas {
     }
 
     @Override
-    public void generarRecurso() {
+    public void recolectarRecurso() {
         if (edificaciones.size() == 0) {
-            System.out.println("Cree la edificación antes");
+            System.out.println("No se puede recolectar recursos, cree una edificación Recolectar Recurso antes");
         } else {
             if (flag == 0) {
-                System.out.println("Solo se puede generar recurso una vez por fase");
+                System.out.println("Solo se puede recolectar recursos una vez por fase");
             }
             if (flag == 1) {
                 for (Edificaciones e : edificaciones) {
-                    if (e instanceof GenerarRecurso) {
-//                        System.out.println("Recurso 3 antes: " + getMaderas());
-//                        System.out.println("    Generando recurso 3...");
-                        setMaderas(this.maderas + ((GenerarRecurso) e).getRecurso());
-                        centro.setRecurso3(centro.getRecurso3() + ((GenerarRecurso) e).getRecurso());
-//                        System.out.println("Recurso 3 después: " + getMaderas());
-                        flag = 0;
-                    } else {
-                        System.out.println("No se puede generar recurso, cree una edificación generar recurso antes");
+                    if (e instanceof RecolectarRecurso) {
+                        if (((RecolectarRecurso) e).getTipo() == 1) {
+                            System.out.println("    Recolectando recurso 1...");
+                            setOros(this.oros + ((RecolectarRecurso) e).getRecurso());
+                            centro.setRecurso1(centro.getRecurso1() + ((RecolectarRecurso) e).getRecurso());
+                            flag = 0;
+                        }
+                        if (((RecolectarRecurso) e).getTipo() == 2) {
+                            System.out.println("    Recolectando recurso 2...");
+                            setEspadas(this.espadas + ((RecolectarRecurso) e).getRecurso());
+                            centro.setRecurso2(centro.getRecurso2() + ((RecolectarRecurso) e).getRecurso());
+                            flag = 0;
+                        }                        
                     }
                 }
             }
+            if (flag == 1) {
+                System.out.println("No se puede recolectar recursos, cree una edificación Recolectar Recurso antes");
+            }
         }
     }
+
+    @Override
+    public void generarRecurso() {
+        if (edificaciones.size() == 0) {
+            System.out.println("No se puede recolectar recursos, cree una edificación Generar Recurso antes");
+        } else {
+            if (flag2 == 0) {
+                System.out.println("Solo se puede generar recursos una vez por fase");
+            }
+            if (flag2 == 1) {
+                for (Edificaciones e : edificaciones) {
+                    if (e instanceof GenerarRecurso) {
+//                        System.out.println("Recurso 3 antes: " + getMaderas());
+                        System.out.println("    Generando recurso 3...");
+                        setMaderas(this.maderas + ((GenerarRecurso) e).getRecurso());
+                        centro.setRecurso3(centro.getRecurso3() + ((GenerarRecurso) e).getRecurso());
+//                        System.out.println("Recurso 3 después: " + getMaderas());
+                        flag2 = 0;
+                    }
+                }
+            }
+            if (flag2 == 1) {
+                System.out.println("No se puede recolectar recursos, cree una edificación Generar Recurso antes");
+            }
+        }
+    }
+
 }

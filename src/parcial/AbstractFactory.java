@@ -15,7 +15,7 @@ import parcial.vehiculos.Vehiculos;
  */
 public interface AbstractFactory {
 
-    Edificaciones getEdificaciones(int tipo, int vida, int fases);
+    Edificaciones getEdificaciones(int tipo, int vida, int fases, int recurso);
 
     Vehiculos getVehiculos(int tipo, int vida, int fases, int ataque);
 
