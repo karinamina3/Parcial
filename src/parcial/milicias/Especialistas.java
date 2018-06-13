@@ -11,11 +11,10 @@ package parcial.milicias;
  */
 public class Especialistas implements Milicias{
     
-    private int vida, fases, ataque;
+    private int vida, ataque;
     
-    public Especialistas(int vida, int fases, int ataque) {       
+    public Especialistas(int vida, int ataque) {       
         this.vida = vida;
-        this.fases = fases;
         this.ataque = ataque;
     }
 
@@ -25,15 +24,7 @@ public class Especialistas implements Milicias{
 
     public void setVida(int vida) {
         this.vida = vida;
-    }
-
-    public int getFases() {
-        return fases;
-    }
-
-    public void setFases(int fases) {
-        this.fases = fases;
-    }
+    }   
 
     public int getAtaque() {
         return ataque;

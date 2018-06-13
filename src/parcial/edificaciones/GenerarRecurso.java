@@ -11,11 +11,10 @@ package parcial.edificaciones;
  */
 public class GenerarRecurso implements Edificaciones {
 
-    private int vida, fases, recurso = 5;
+    private int vida, recurso = 165;
 
-    public GenerarRecurso(int vida, int fases) {
-        this.vida = vida;
-        this.fases = fases;        
+    public GenerarRecurso(int vida) {
+        this.vida = vida;    
     }
 
     public int getVida() {
@@ -24,15 +23,7 @@ public class GenerarRecurso implements Edificaciones {
 
     public void setVida(int vida) {
         this.vida = vida;
-    }
-
-    public int getFases() {
-        return fases;
-    }
-
-    public void setFases(int fases) {
-        this.fases = fases;
-    }
+    }   
 
     public int getRecurso() {
         return recurso;

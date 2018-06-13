@@ -11,11 +11,10 @@ package parcial.vehiculos;
  */
 public class Tipo2 implements Vehiculos {
 
-    private int vida, fases, ataque;
+    private int vida, ataque;
 
-    public Tipo2(int vida, int fases, int ataque) {
-        this.vida = vida;
-        this.fases = fases;
+    public Tipo2(int vida, int ataque) {
+        this.vida = vida + 50;        
         this.ataque = ataque;
     }
 
@@ -25,14 +24,6 @@ public class Tipo2 implements Vehiculos {
 
     public void setVida(int vida) {
         this.vida = vida;
-    }
-
-    public int getFases() {
-        return fases;
-    }
-
-    public void setFases(int fases) {
-        this.fases = fases;
     }
 
     public int getAtaque() {

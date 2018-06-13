@@ -23,9 +23,11 @@ public interface Razas <R> {
 
     String mostrarCentro();
 
-    void construir();
+    void construir(int fase);
 
     void opcionesConstruir();
+    
+    void fasesEspera(int fase);
 
     int cuatroOpciones();
 
@@ -35,7 +37,9 @@ public interface Razas <R> {
     
     boolean mejorarCentro(double mejora);
     
-    void recolectarRecurso();
+    int recolectarAux();
+    
+    void recolectarRecurso(int flag);
             
-    void generarRecurso();
+    void generarRecurso(int flag2);
 }

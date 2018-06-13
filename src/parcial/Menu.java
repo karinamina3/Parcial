@@ -39,8 +39,9 @@ public class Menu {
         System.out.println("7. Terminar turno");
     }
 
-    public void mostrar(Razas raza1, Razas raza2 ) {
+    public void mostrar(Razas raza1, Razas raza2, int fase) {
         int opcion = 8;
+        int flag = 1;
         Scanner leer = new Scanner(System.in);
 
         while (opcion != 7) {
@@ -51,7 +52,7 @@ public class Menu {
 
                 switch (opcion) {
                     case 1:
-                        raza1.construir();
+                        raza1.construir(fase);
                         break;
                     case 2:
                         raza1.atacar(raza2);
@@ -67,11 +68,16 @@ public class Menu {
                             System.out.println("No se pudo realizar la mejora, recursos insuficientes");
                         }
                         break;
-                    case 5:
-                        raza1.recolectarRecurso();
+                    case 5:                        
+                        if (flag == 1){
+                            raza1.recolectarRecurso(1);
+                            flag = 0;
+                        } else {
+                            System.out.println("Solo se puede recolectar recursos una vez por fase");
+                        }                        
                         break;
                     case 6:
-                        raza1.generarRecurso();
+                        raza1.generarRecurso(1);
                         break;
                     case 7:
                         break;

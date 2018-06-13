@@ -11,11 +11,10 @@ package parcial.edificaciones;
  */
 public class ConstruirVehiculos implements Edificaciones {
 
-    private int vida, fases;
+    private int vida;
 
-    public ConstruirVehiculos(int vida, int fases) {
-        this.vida = vida;
-        this.fases = fases;
+    public ConstruirVehiculos(int vida) {
+        this.vida = vida;        
     }
 
     public int getVida() {
@@ -24,14 +23,6 @@ public class ConstruirVehiculos implements Edificaciones {
 
     public void setVida(int vida) {
         this.vida = vida;
-    }
-
-    public int getFases() {
-        return fases;
-    }
-
-    public void setFases(int fases) {
-        this.fases = fases;
     }
 
 }

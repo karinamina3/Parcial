@@ -16,27 +16,27 @@ import parcial.AbstractFactory;
 public class FactoryEdificaciones implements AbstractFactory{
    
     @Override
-    public  Edificaciones getEdificaciones(int tipo, int vida, int fases, int recurso) {
+    public  Edificaciones getEdificaciones(int tipo, int vida, int recurso) {
         switch (tipo){
             case 1:
-                return new RecolectarRecurso(vida, fases, recurso);
+                return new RecolectarRecurso(vida, recurso);
             case 2:
-                return new GenerarRecurso(vida, fases);
+                return new GenerarRecurso(vida);
             case 3:
-                return new EntrenarMilicias(vida, fases);
+                return new EntrenarMilicias(vida);
             case 4:
-                return new ConstruirVehiculos(vida, fases);
+                return new ConstruirVehiculos(vida);
         }
         return null;
     }
 
     @Override
-    public Vehiculos getVehiculos(int tipo, int vida, int fases, int ataque) {
+    public Vehiculos getVehiculos(int tipo, int vida, int ataque) {
         return null;
     }
 
     @Override
-    public Milicias getMilicias(int tipo, int vida, int fases, int ataque) {
+    public Milicias getMilicias(int tipo, int vida, int ataque) {
         return null;
     }
 }
