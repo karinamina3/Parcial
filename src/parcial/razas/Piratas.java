@@ -393,20 +393,17 @@ public class Piratas implements Razas {
     }
 
     @Override
-    public int recolectarAux(){        
+    public void recolectarAux(){        
         for (Edificaciones e : edificaciones) {
             if (e instanceof RecolectarRecurso){
                 if (((RecolectarRecurso) e).getTipo() == 1){                    
-                    this.recolecta += ((RecolectarRecurso) e).getRecurso();
-                    return recolecta;
+                    this.recolecta += ((RecolectarRecurso) e).getRecurso();                    
                 } 
                 if (((RecolectarRecurso) e).getTipo() == 2) {
-                    this.recolecta2 += ((RecolectarRecurso) e).getRecurso();
-                    return recolecta2;
+                    this.recolecta2 += ((RecolectarRecurso) e).getRecurso();                    
                 }                
             }
-        }
-        return 0;
+        }        
     }
     
     @Override

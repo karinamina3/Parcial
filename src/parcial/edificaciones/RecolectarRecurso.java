@@ -11,7 +11,7 @@ package parcial.edificaciones;
  */
 public class RecolectarRecurso implements Edificaciones {
 
-    private int vida, tipo, recurso = 25;
+    private int vida, tipo, recurso = 100;
 
     public RecolectarRecurso(int vida, int tipo) {        
         this.vida = vida;        

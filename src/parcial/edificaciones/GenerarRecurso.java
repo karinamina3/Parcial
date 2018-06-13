@@ -11,7 +11,7 @@ package parcial.edificaciones;
  */
 public class GenerarRecurso implements Edificaciones {
 
-    private int vida, recurso = 165;
+    private int vida, recurso = 80;
 
     public GenerarRecurso(int vida) {
         this.vida = vida;    

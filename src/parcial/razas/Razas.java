@@ -37,7 +37,7 @@ public interface Razas <R> {
     
     boolean mejorarCentro(double mejora);
     
-    int recolectarAux();
+    void recolectarAux();
     
     void recolectarRecurso(int flag);
             
