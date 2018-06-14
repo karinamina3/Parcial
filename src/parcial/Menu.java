@@ -31,20 +31,19 @@ public class Menu {
         System.out.println("");
         System.out.println("--- MENÚ PRINCIPAL ---");
         System.out.println("1. Construir");
-        System.out.println("2. Atacar");
-        System.out.println("3. Defender");
-        System.out.println("4. Mejorar Nivel del Centro de Mando");
-        System.out.println("5. Recolectar Recursos");
-        System.out.println("6. Generar Recursos");
-        System.out.println("7. Terminar turno");
+        System.out.println("2. Atacar/Defender");        
+        System.out.println("3. Mejorar Nivel del Centro de Mando");
+        System.out.println("4. Recolectar Recursos");
+        System.out.println("5. Generar Recursos");
+        System.out.println("6. Terminar turno");
     }
 
     public void mostrar(Razas raza1, Razas raza2, int fase) {
-        int opcion = 8;
+        int opcion = 7;
         int flag = 1;
         Scanner leer = new Scanner(System.in);
 
-        while (opcion != 7) {
+        while (opcion != 6) {
             opciones();
             System.out.print(": ");
             try {
@@ -58,9 +57,6 @@ public class Menu {
                         raza1.atacar(raza2);
                         break;
                     case 3:
-//                        raza.defender();
-                        break;
-                    case 4:
                         System.out.println("    Mejoras disponibles: 1. Aumentar 10% la capacidad, 2. Aumentar 30% la capacidad, 3. Aumentar 50% la capacidad");
                         if (raza1.mejorarCentro(mejora())){
                             System.out.println("Mejora realizada satisfactoriamente");
@@ -68,7 +64,7 @@ public class Menu {
                             System.out.println("No se pudo realizar la mejora, recursos insuficientes");
                         }
                         break;
-                    case 5:                        
+                    case 4:                        
                         if (flag == 1){
                             raza1.recolectarRecurso(1);
                             flag = 0;
@@ -76,10 +72,10 @@ public class Menu {
                             System.out.println("Solo se puede recolectar recursos una vez por fase");
                         }                        
                         break;
-                    case 6:
+                    case 5:
                         raza1.generarRecurso(1);
                         break;
-                    case 7:
+                    case 6:
                         break;
                     default:
                         System.out.println("Por favor, ingrese una opción válida");
