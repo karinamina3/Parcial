@@ -11,9 +11,21 @@ package parcial.vehiculos;
  */
 public interface Vehiculos {
     
+    /**
+     * Envia un entero con el dato del valor del ataque
+     * @return valor de ataque
+     */
     int atacar();
     
+    /**
+     * Modifica la vida si es atacado
+     * @param ataque 
+     */    
     void recibirAtaque(int ataque);
     
+    /**
+     * Retorna el valor de la vida
+     * @return 
+     */
     int getVida();
 }

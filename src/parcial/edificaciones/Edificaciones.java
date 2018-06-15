@@ -11,7 +11,15 @@ package parcial.edificaciones;
  */
 public interface Edificaciones {
     
+    /**
+     * Modifica la vida si es atacado
+     * @param ataque 
+     */
     void recibirAtaque(int ataque);
     
+    /**
+     * Retorna el valor de la vida
+     * @return 
+     */
     int getVida();
 }
