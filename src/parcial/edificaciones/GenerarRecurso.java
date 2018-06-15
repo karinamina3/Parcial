@@ -36,7 +36,7 @@ public class GenerarRecurso implements Edificaciones {
         
     @Override
     public String toString(){
-        return "Edificación de Generar Recuso";
+        return "Edificación de Generar Recurso";
     }
     
     @Override

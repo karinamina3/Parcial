@@ -30,7 +30,7 @@ import parcial.vehiculos.Vehiculos;
 public class Hadas implements Razas {
 
     private final String nombre = "Hadas";
-//    private int polvosHadas = 500, estrellas = 400, pociones = 300;
+//    private int polvosHadas = 500, estrellas = 400, pociones = 300;       //poder hacer solamente 2 construcciones
     private int polvosHadas = 2000, estrellas = 1500, pociones = 1000;
     private int tope1 = 10000, tope2 = 5000, tope3 = 3000;
     private final CentroMando centro = new CentroMando(100, polvosHadas, estrellas, pociones, tope1, tope2, tope3);
@@ -132,12 +132,23 @@ public class Hadas implements Razas {
     }
 
     @Override
-    public boolean poderConstruirEspecialista() {
+    public boolean poderConstruirEspecialista() {        
         for (Milicias milicia : milicias) {
             if (milicia instanceof Especialistas) {
                 return false;
             }
         }
+        return true;
+    }
+    
+    @Override
+    public boolean poderConstruirEspecialistaAux() {
+        for (Iterator<Map.Entry<Milicias, Integer>> it = miliciasEspera.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<Milicias, Integer> x = it.next();
+            if (x.getKey() instanceof Especialistas) {
+                return false;
+            }
+        }        
         return true;
     }
 
@@ -186,7 +197,7 @@ public class Hadas implements Razas {
                     case 1:
                         if (poderConstruirEdificios(250, 150)) {
                             System.out.println("    Escoger tipo de Edificación: 1. Recolectar Recurso, 2. Generar Recurso, 3. Entrenar Milicia, 4. Construir Vehículo");
-                            System.out.println("        Costo: 250 polvos de hadas y 150 estrellas");
+                            System.out.println("        Costo: 250 polvos de hadas y 150 estrellas, Vida: 35");
                             factory = FactoryProducer.getFactory(1);
                             int aux = cuatroOpciones();
                             int espera = 1;
@@ -206,14 +217,14 @@ public class Hadas implements Razas {
                         break;
                     case 2:
                         if (poderConstruirMilicias(250, 150)) {
-                            System.out.println("    Escoger tipo de Milicia: 1. Escuadrón, 2. Especialistas");
-                            System.out.println("        Costo: 250 polvos de hadas y 150 pociones");
+                            System.out.println("    Escoger tipo de Milicia: 1. Escuadrón, 2. Especialista");
+                            System.out.println("        Costo: 250 polvos de hadas y 150 pociones, Vida: 40, Ataque: 10 y 20");
                             factory = FactoryProducer.getFactory(2);
                             int aux = dosOpciones();
                             int espera = 3;
                             if (aux == 2) {
-                                if (poderConstruirEspecialista()) {
-                                    this.miliciasEspera.put(factory.getMilicias(aux, 40, 10), espera + fase);
+                                if (poderConstruirEspecialista() && poderConstruirEspecialistaAux()) {
+                                    this.miliciasEspera.put(factory.getMilicias(aux, 40, 20), espera + fase);
                                     System.out.println("La milicia estará preparada dentro de " + espera + " fase");
                                     setPolvosHadas(this.polvosHadas - 250);
                                     setPociones(this.pociones - 150);
@@ -238,7 +249,7 @@ public class Hadas implements Razas {
                     case 3:
                         if (poderConstruirVehiculos(250, 150)) {
                             System.out.println("    Escoger tipo de Vehículo: 1. Primario , 2. Secundario");
-                            System.out.println("        Costo: 250 estrellas y 150 pociones");
+                            System.out.println("        Costo: 250 estrellas y 150 pociones, Vida: 40 y 30, Ataque: 20 y 10");
                             factory = FactoryProducer.getFactory(3);
                             int aux = dosOpciones();
                             int espera = 2;
@@ -489,7 +500,7 @@ public class Hadas implements Razas {
     }
 
     @Override
-    public void atacar(Object r) {
+    public boolean atacar(Object r) {
         if (r instanceof Razas) {  //poder acceder a los métodos
             if (this.milicias.isEmpty() && this.vehiculos.isEmpty()) {
                 System.out.println("No puede atacar, cree una milicia o algún vehículo");
@@ -504,25 +515,30 @@ public class Hadas implements Razas {
                     if (this.milicias.isEmpty()) {
                         System.out.println("No tiene ninguna milicia preparada");
                     } else {
-                        ((Razas) r).recibirAtaque(this.milicias.get(0), aux);
+                        if (((Razas) r).recibirAtaque(this.milicias.get(0), aux)) {
+                            return true;
+                        }
                     }
                 } else {
                     if (this.vehiculos.isEmpty()) {
                         System.out.println("No tiene ningún vehículo construido");
                     } else {
-                        ((Razas) r).recibirAtaque(this.vehiculos.get(0), aux);
+                        if (((Razas) r).recibirAtaque(this.vehiculos.get(0), aux)) {
+                            return true;
+                        }
                     }
                 }
             }
         }
+        return false;
     }
 
     @Override
-    public void recibirAtaque(Object atacador, int seleccion) {
+    public boolean recibirAtaque(Object atacador, int seleccion) {
         int enumeracion = 1;
         switch (seleccion) {
             case 1:
-                if (this.edificaciones.isEmpty() && finalJuego()) {
+                if (this.edificaciones.isEmpty()) {
                     System.out.println("    Se atacará el Centro de Mando del contrincante, porque no tiene más edificios");
                     if (centro.getVida() > 0) {
                         if (atacador instanceof Milicias) {
@@ -574,6 +590,7 @@ public class Hadas implements Razas {
                                 if (e.getVida() < 0) {
                                     this.edificaciones.remove(e);
                                 }
+                                return true;
                             }
                             if (atacador instanceof Vehiculos) {
                                 System.out.println("Vida antes: " + e.getVida());
@@ -583,14 +600,15 @@ public class Hadas implements Razas {
                                 if (e.getVida() < 0) {
                                     this.edificaciones.remove(e);
                                 }
+                                return true;
                             }
                         }
                     }
                 }
-                break;
+                return true;
             case 2:
                 if (this.milicias.isEmpty()) {
-                    System.out.println("    El contrincante no tiene milicias para atacar");
+                    System.out.println("El contrincante no tiene milicias para atacar");
                 } else {
                     System.out.println("    Escoge que milicia quieres atacar:");
                     for (Milicias m : this.milicias) {
@@ -627,6 +645,7 @@ public class Hadas implements Razas {
                                 if (m.getVida() < 0) {
                                     this.milicias.remove(m);
                                 }
+                                return true;
                             }
                             if (atacador instanceof Vehiculos) {
                                 System.out.println("Vida antes: " + m.getVida());
@@ -636,14 +655,15 @@ public class Hadas implements Razas {
                                 if (m.getVida() < 0) {
                                     this.milicias.remove(m);
                                 }
+                                return true;
                             }
                         }
                     }
                 }
-                break;
+                return false;
             case 3:
                 if (this.vehiculos.isEmpty()) {
-                    System.out.println("    El contrincante no tiene vehiculos para atacar");
+                    System.out.println("El contrincante no tiene vehiculos para atacar");
                 } else {
                     System.out.println("    Escoge que vehículo quieres atacar:");
                     for (Vehiculos v : this.vehiculos) {
@@ -680,6 +700,7 @@ public class Hadas implements Razas {
                                 if (v.getVida() < 0) {
                                     this.vehiculos.remove(v);
                                 }
+                                return true;
                             }
                             if (atacador instanceof Vehiculos) {
                                 System.out.println("Vida antes: " + v.getVida());
@@ -689,12 +710,14 @@ public class Hadas implements Razas {
                                 if (v.getVida() < 0) {
                                     this.vehiculos.remove(v);
                                 }
+                                return true;
                             }
                         }
                     }
                 }
-                break;
+                return false;
         }
+        return false;
     }
 
     @Override

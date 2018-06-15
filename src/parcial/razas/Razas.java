@@ -18,6 +18,8 @@ public interface Razas<R> {
     boolean poderConstruirMilicias(int costor1, int costor2);
 
     boolean poderConstruirEspecialista();
+    
+    public boolean poderConstruirEspecialistaAux();
 
     boolean poderConstruirVehiculos(int costor1, int costor2);
 
@@ -43,9 +45,9 @@ public interface Razas<R> {
 
     void generarRecurso(int flag);
 
-    void atacar(R r);
+    boolean atacar(R r);
 
-    void recibirAtaque(R atacador, int seleccion);
+    boolean recibirAtaque(R atacador, int seleccion);
 
     boolean finalJuego();
 }

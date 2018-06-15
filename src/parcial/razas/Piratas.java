@@ -30,7 +30,7 @@ import parcial.vehiculos.Vehiculos;
 public class Piratas implements Razas {
 
     private final String nombre = "Piratas";
-//    private int oros = 550, maderas = 450, espadas = 350;
+//    private int oros = 550, maderas = 450, espadas = 350;             //poder hacer solamente 2 construcciones
     private int oros = 2000, maderas = 1500, espadas = 1000;
     private int tope1 = 10000, tope2 = 5000, tope3 = 3000;
     private final CentroMando centro = new CentroMando(100, oros, maderas, espadas, tope1, tope2, tope3);
@@ -95,7 +95,7 @@ public class Piratas implements Razas {
 
     @Override
     public void mostrar() {
-        System.out.println("Total de elementos creados:");
+        System.out.println("");
         edificaciones.forEach((e) -> {
             System.out.println("    Edificaciones: " + e.toString());
         });
@@ -142,6 +142,17 @@ public class Piratas implements Razas {
     }
 
     @Override
+    public boolean poderConstruirEspecialistaAux() {
+        for (Iterator<Map.Entry<Milicias, Integer>> it = miliciasEspera.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<Milicias, Integer> x = it.next();
+            if (x.getKey() instanceof Especialistas) {
+                return false;
+            }
+        }        
+        return true;
+    }
+    
+    @Override
     public boolean poderConstruirVehiculos(int costor1, int costor2) {
         for (Edificaciones edificacion : edificaciones) {
             if (edificacion instanceof ConstruirVehiculos) {
@@ -186,7 +197,7 @@ public class Piratas implements Razas {
                     case 1:
                         if (poderConstruirEdificios(275, 175)) {
                             System.out.println("    Escoger tipo de Edificación: 1. Recolectar Recurso, 2. Generar Recurso, 3. Entrenar Milicia, 4. Construir Vehículo");
-                            System.out.println("        Costo: 275 oros y 175 maderas");
+                            System.out.println("        Costo: 275 oros y 175 maderas, Vida: 30");
                             factory = FactoryProducer.getFactory(1);
                             int aux = cuatroOpciones();
                             int espera = 1;
@@ -206,15 +217,15 @@ public class Piratas implements Razas {
                         break;
                     case 2:
                         if (poderConstruirMilicias(275, 175)) {
-                            System.out.println("    Escoger tipo de Milicia: 1. Escuadrón, 2. Especialistas");
-                            System.out.println("        Costo: 275 oros y 175 espadas");
+                            System.out.println("    Escoger tipo de Milicia: 1. Escuadrón, 2. Especialista");
+                            System.out.println("        Costo: 275 oros y 175 espadas, Vida: 35, Ataque: 20 y 30");
                             factory = FactoryProducer.getFactory(2);
                             int aux = dosOpciones();
                             int espera = 2;
                             if (aux == 2) {
-                                if (poderConstruirEspecialista()) {
-                                    this.miliciasEspera.put(factory.getMilicias(aux, 35, 20), espera + fase);
-                                    System.out.println("La milicia estará preparada dentro de " + espera + " fase");
+                                if (poderConstruirEspecialista() && poderConstruirEspecialistaAux()) {
+                                    this.miliciasEspera.put(factory.getMilicias(aux, 35, 30), espera + fase);
+                                    System.out.println("La milicia estará preparada dentro de " + espera + " fases");
                                     setOros(this.oros - 275);
                                     setEspadas(this.espadas - 175);
                                     centro.setRecurso1(centro.getRecurso1() - 275);
@@ -225,7 +236,7 @@ public class Piratas implements Razas {
                             }
                             if (aux == 1) {
                                 this.miliciasEspera.put(factory.getMilicias(aux, 35, 20), espera + fase);
-                                System.out.println("La milicia estará preparada dentro de " + espera + " fase");
+                                System.out.println("La milicia estará preparada dentro de " + espera + " fases");
                                 setOros(this.oros - 275);
                                 setEspadas(this.espadas - 175);
                                 centro.setRecurso1(centro.getRecurso1() - 275);
@@ -238,16 +249,16 @@ public class Piratas implements Razas {
                     case 3:
                         if (poderConstruirVehiculos(275, 175)) {
                             System.out.println("    Escoger tipo de Vehículo: 1. Primario , 2. Secundario");
-                            System.out.println("        Costo: 275 maderas y 175 espadas");
+                            System.out.println("        Costo: 275 maderas y 175 espadas, Vida: 50 y 40, Ataque: 30 y 20");
                             factory = FactoryProducer.getFactory(3);
                             int aux = dosOpciones();
                             int espera = 3;
                             if (aux == 1) {
                                 this.vehiculosEspera.put(factory.getVehiculos(aux, 50, 30), espera + fase);
-                                System.out.println("El vehículo estará listo dentro de " + espera + " fase");
+                                System.out.println("El vehículo estará listo dentro de " + espera + " fases");
                             } else {
                                 this.vehiculosEspera.put(factory.getVehiculos(aux, 40, 20), espera + fase);
-                                System.out.println("El vehículo estará listo dentro de " + espera + " fase");
+                                System.out.println("El vehículo estará listo dentro de " + espera + " fases");
                             }
                         } else {
                             System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de Construir Vehículos");
@@ -488,8 +499,8 @@ public class Piratas implements Razas {
         }
     }
 
-    @Override
-    public void atacar(Object r) {
+     @Override
+    public boolean atacar(Object r) {
         if (r instanceof Razas) {  //poder acceder a los métodos
             if (this.milicias.isEmpty() && this.vehiculos.isEmpty()) {
                 System.out.println("No puede atacar, cree una milicia o algún vehículo");
@@ -504,25 +515,30 @@ public class Piratas implements Razas {
                     if (this.milicias.isEmpty()) {
                         System.out.println("No tiene ninguna milicia preparada");
                     } else {
-                        ((Razas) r).recibirAtaque(this.milicias.get(0), aux);
+                        if (((Razas) r).recibirAtaque(this.milicias.get(0), aux)) {
+                            return true;
+                        }
                     }
                 } else {
                     if (this.vehiculos.isEmpty()) {
                         System.out.println("No tiene ningún vehículo construido");
                     } else {
-                        ((Razas) r).recibirAtaque(this.vehiculos.get(0), aux);
+                        if (((Razas) r).recibirAtaque(this.vehiculos.get(0), aux)) {
+                            return true;
+                        }
                     }
                 }
             }
         }
+        return false;
     }
 
     @Override
-    public void recibirAtaque(Object atacador, int seleccion) {
+    public boolean recibirAtaque(Object atacador, int seleccion) {
         int enumeracion = 1;
         switch (seleccion) {
             case 1:
-                if (this.edificaciones.isEmpty() && finalJuego()) {
+                if (this.edificaciones.isEmpty()) {
                     System.out.println("    Se atacará el Centro de Mando del contrincante, porque no tiene más edificios");
                     if (centro.getVida() > 0) {
                         if (atacador instanceof Milicias) {
@@ -574,6 +590,7 @@ public class Piratas implements Razas {
                                 if (e.getVida() < 0) {
                                     this.edificaciones.remove(e);
                                 }
+                                return true;
                             }
                             if (atacador instanceof Vehiculos) {
                                 System.out.println("Vida antes: " + e.getVida());
@@ -583,14 +600,15 @@ public class Piratas implements Razas {
                                 if (e.getVida() < 0) {
                                     this.edificaciones.remove(e);
                                 }
+                                return true;
                             }
                         }
                     }
                 }
-                break;
+                return true;
             case 2:
                 if (this.milicias.isEmpty()) {
-                    System.out.println("    El contrincante no tiene milicias para atacar");
+                    System.out.println("El contrincante no tiene milicias para atacar");
                 } else {
                     System.out.println("    Escoge que milicia quieres atacar:");
                     for (Milicias m : this.milicias) {
@@ -627,6 +645,7 @@ public class Piratas implements Razas {
                                 if (m.getVida() < 0) {
                                     this.milicias.remove(m);
                                 }
+                                return true;
                             }
                             if (atacador instanceof Vehiculos) {
                                 System.out.println("Vida antes: " + m.getVida());
@@ -636,14 +655,15 @@ public class Piratas implements Razas {
                                 if (m.getVida() < 0) {
                                     this.milicias.remove(m);
                                 }
+                                return true;
                             }
                         }
                     }
                 }
-                break;
+                return false;
             case 3:
                 if (this.vehiculos.isEmpty()) {
-                    System.out.println("    El contrincante no tiene vehiculos para atacar");
+                    System.out.println("El contrincante no tiene vehiculos para atacar");
                 } else {
                     System.out.println("    Escoge que vehículo quieres atacar:");
                     for (Vehiculos v : this.vehiculos) {
@@ -680,6 +700,7 @@ public class Piratas implements Razas {
                                 if (v.getVida() < 0) {
                                     this.vehiculos.remove(v);
                                 }
+                                return true;
                             }
                             if (atacador instanceof Vehiculos) {
                                 System.out.println("Vida antes: " + v.getVida());
@@ -689,12 +710,14 @@ public class Piratas implements Razas {
                                 if (v.getVida() < 0) {
                                     this.vehiculos.remove(v);
                                 }
+                                return true;
                             }
                         }
                     }
                 }
-                break;
+                return false;
         }
+        return false;
     }
 
     @Override

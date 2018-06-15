@@ -57,7 +57,9 @@ public class Menu {
                         break;
                     case 2:
                         if (flag == 1) {
-                            raza1.atacar(raza2);
+                            if (raza1.atacar(raza2)) {
+                                flag = 0;
+                            }
                         } else {
                             System.out.println("Solo se puede atacar una vez por fase");
                         }
@@ -68,7 +70,7 @@ public class Menu {
                             System.out.println("Mejora realizada satisfactoriamente");
                         } else {
                             System.out.println("No se pudo realizar la mejora, recursos insuficientes");
-                        }
+                        }   
                         break;
                     case 4:
                         if (flag2 == 1) {

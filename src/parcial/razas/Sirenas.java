@@ -30,7 +30,7 @@ import parcial.vehiculos.Vehiculos;
 public class Sirenas implements Razas {
 
     private final String nombre = "Sirenas";
-//    private int esmeraldas = 600, rubis = 500, perlas = 400;
+//    private int esmeraldas = 600, rubis = 500, perlas = 400;    //poder hacer solamente 2 construcciones
     private int esmeraldas = 2000, rubis = 1500, perlas = 1000;
     private int tope1 = 10000, tope2 = 5000, tope3 = 3000;
     private final CentroMando centro = new CentroMando(100, esmeraldas, rubis, perlas, tope1, tope2, tope3);
@@ -95,7 +95,7 @@ public class Sirenas implements Razas {
 
     @Override
     public void mostrar() {
-        System.out.println("Total de elementos creados:");
+        System.out.println("");
         edificaciones.forEach((e) -> {
             System.out.println("    Edificaciones: " + e.toString());
         });
@@ -138,6 +138,17 @@ public class Sirenas implements Razas {
                 return false;
             }
         }
+        return true;
+    }
+    
+    @Override
+    public boolean poderConstruirEspecialistaAux() {
+        for (Iterator<Map.Entry<Milicias, Integer>> it = miliciasEspera.entrySet().iterator(); it.hasNext();) {
+            Map.Entry<Milicias, Integer> x = it.next();
+            if (x.getKey() instanceof Especialistas) {
+                return false;
+            }
+        }        
         return true;
     }
 
@@ -186,7 +197,7 @@ public class Sirenas implements Razas {
                     case 1:
                         if (poderConstruirEdificios(300, 200)) {
                             System.out.println("    Escoger tipo de Edificación: 1. Recolectar Recurso, 2. Generar Recurso, 3. Entrenar Milicia, 4. Construir Vehículo");
-                            System.out.println("        Costo: 300 esmeraldas y 200 rubís");
+                            System.out.println("        Costo: 300 esmeraldas y 200 rubís, Vida: 40");
                             factory = FactoryProducer.getFactory(1);
                             int aux = cuatroOpciones();
                             int espera = 1;
@@ -206,15 +217,15 @@ public class Sirenas implements Razas {
                         break;
                     case 2:
                         if (poderConstruirMilicias(300, 200)) {
-                            System.out.println("    Escoger tipo de Milicia: 1. Escuadron, 2. Especialistas");
-                            System.out.println("        Costo: 300 esmeraldas y 200 perlas");
+                            System.out.println("    Escoger tipo de Milicia: 1. Escuadrón, 2. Especialista");
+                            System.out.println("        Costo: 300 esmeraldas y 200 perlas, Vida: 30, Ataque: 15 y 25");
                             factory = FactoryProducer.getFactory(2);
                             int aux = dosOpciones();
                             int espera = 2;
                             if (aux == 2) {
-                                if (poderConstruirEspecialista()) {
-                                    this.miliciasEspera.put(factory.getMilicias(aux, 30, 15), espera + fase);
-                                    System.out.println("La milicia estará preparada dentro de " + espera + " fase");
+                                if (poderConstruirEspecialista() && poderConstruirEspecialistaAux()) {
+                                    this.miliciasEspera.put(factory.getMilicias(aux, 30, 25), espera + fase);
+                                    System.out.println("La milicia estará preparada dentro de " + espera + " fases");
                                     setEsmeraldas(this.esmeraldas - 300);
                                     setPerlas(this.perlas - 200);
                                     centro.setRecurso1(centro.getRecurso1() - 300);
@@ -225,7 +236,7 @@ public class Sirenas implements Razas {
                             }
                             if (aux == 1) {
                                 this.miliciasEspera.put(factory.getMilicias(aux, 30, 15), espera + fase);
-                                System.out.println("La milicia estará preparada dentro de " + espera + " fase");
+                                System.out.println("La milicia estará preparada dentro de " + espera + " fases");
                                 setEsmeraldas(this.esmeraldas - 300);
                                 setPerlas(this.perlas - 200);
                                 centro.setRecurso1(centro.getRecurso1() - 300);
@@ -238,16 +249,16 @@ public class Sirenas implements Razas {
                     case 3:
                         if (poderConstruirVehiculos(300, 200)) {
                             System.out.println("    Escoger tipo de Vehículo: 1. Primario , 2. Secundario");
-                            System.out.println("        Costo: 300 rubís y 200 perlas");
+                            System.out.println("        Costo: 300 rubís y 200 perlas, Vida: 45 y 35, Ataque: 25 y 15");
                             factory = FactoryProducer.getFactory(3);
                             int aux = dosOpciones();
                             int espera = 2;
                             if (aux == 1) {
                                 this.vehiculosEspera.put(factory.getVehiculos(aux, 45, 25), espera + fase);
-                                System.out.println("El vehículo estará listo dentro de " + espera + " fase");
+                                System.out.println("El vehículo estará listo dentro de " + espera + " fases");
                             } else {
                                 this.vehiculosEspera.put(factory.getVehiculos(aux, 35, 15), espera + fase);
-                                System.out.println("El vehículo estará listo dentro de " + espera + " fase");
+                                System.out.println("El vehículo estará listo dentro de " + espera + " fases");
                             }
                         } else {
                             System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de Construir Vehículos");
@@ -489,7 +500,7 @@ public class Sirenas implements Razas {
     }
 
     @Override
-    public void atacar(Object r) {
+    public boolean atacar(Object r) {
         if (r instanceof Razas) {  //poder acceder a los métodos
             if (this.milicias.isEmpty() && this.vehiculos.isEmpty()) {
                 System.out.println("No puede atacar, cree una milicia o algún vehículo");
@@ -504,25 +515,30 @@ public class Sirenas implements Razas {
                     if (this.milicias.isEmpty()) {
                         System.out.println("No tiene ninguna milicia preparada");
                     } else {
-                        ((Razas) r).recibirAtaque(this.milicias.get(0), aux);
+                        if (((Razas) r).recibirAtaque(this.milicias.get(0), aux)) {
+                            return true;
+                        }
                     }
                 } else {
                     if (this.vehiculos.isEmpty()) {
                         System.out.println("No tiene ningún vehículo construido");
                     } else {
-                        ((Razas) r).recibirAtaque(this.vehiculos.get(0), aux);
+                        if (((Razas) r).recibirAtaque(this.vehiculos.get(0), aux)) {
+                            return true;
+                        }
                     }
                 }
             }
         }
+        return false;
     }
 
     @Override
-    public void recibirAtaque(Object atacador, int seleccion) {
+    public boolean recibirAtaque(Object atacador, int seleccion) {
         int enumeracion = 1;
         switch (seleccion) {
             case 1:
-                if (this.edificaciones.isEmpty() && finalJuego()) {
+                if (this.edificaciones.isEmpty()) {
                     System.out.println("    Se atacará el Centro de Mando del contrincante, porque no tiene más edificios");
                     if (centro.getVida() > 0) {
                         if (atacador instanceof Milicias) {
@@ -574,6 +590,7 @@ public class Sirenas implements Razas {
                                 if (e.getVida() < 0) {
                                     this.edificaciones.remove(e);
                                 }
+                                return true;
                             }
                             if (atacador instanceof Vehiculos) {
                                 System.out.println("Vida antes: " + e.getVida());
@@ -583,14 +600,15 @@ public class Sirenas implements Razas {
                                 if (e.getVida() < 0) {
                                     this.edificaciones.remove(e);
                                 }
+                                return true;
                             }
                         }
                     }
                 }
-                break;
+                return true;
             case 2:
                 if (this.milicias.isEmpty()) {
-                    System.out.println("    El contrincante no tiene milicias para atacar");
+                    System.out.println("El contrincante no tiene milicias para atacar");
                 } else {
                     System.out.println("    Escoge que milicia quieres atacar:");
                     for (Milicias m : this.milicias) {
@@ -627,6 +645,7 @@ public class Sirenas implements Razas {
                                 if (m.getVida() < 0) {
                                     this.milicias.remove(m);
                                 }
+                                return true;
                             }
                             if (atacador instanceof Vehiculos) {
                                 System.out.println("Vida antes: " + m.getVida());
@@ -636,14 +655,15 @@ public class Sirenas implements Razas {
                                 if (m.getVida() < 0) {
                                     this.milicias.remove(m);
                                 }
+                                return true;
                             }
                         }
                     }
                 }
-                break;
+                return false;
             case 3:
                 if (this.vehiculos.isEmpty()) {
-                    System.out.println("    El contrincante no tiene vehiculos para atacar");
+                    System.out.println("El contrincante no tiene vehiculos para atacar");
                 } else {
                     System.out.println("    Escoge que vehículo quieres atacar:");
                     for (Vehiculos v : this.vehiculos) {
@@ -680,6 +700,7 @@ public class Sirenas implements Razas {
                                 if (v.getVida() < 0) {
                                     this.vehiculos.remove(v);
                                 }
+                                return true;
                             }
                             if (atacador instanceof Vehiculos) {
                                 System.out.println("Vida antes: " + v.getVida());
@@ -689,12 +710,14 @@ public class Sirenas implements Razas {
                                 if (v.getVida() < 0) {
                                     this.vehiculos.remove(v);
                                 }
+                                return true;
                             }
                         }
                     }
                 }
-                break;
+                return false;
         }
+        return false;
     }
 
     @Override

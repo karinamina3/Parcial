@@ -45,7 +45,7 @@ public class RecolectarRecurso implements Edificaciones {
 
      @Override
     public String toString(){
-        return "Edificación de Recolectar Recuso";
+        return "Edificación de Recolectar Recurso";
     }
     
     @Override

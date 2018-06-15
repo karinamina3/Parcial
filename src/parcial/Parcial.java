@@ -31,7 +31,7 @@ public class Parcial {
         System.out.println("Cada raza podrá construir cuantas edificaciones, milicias o vehículos deseen mientras tengan los recursos suficientes.");
         System.out.println("¿Quiénes serán los triunfadores?");
 
-        System.out.println("    Escoger razas: 1. Piratas, 2. Sirenas, 3. Hadas, 4. Fortalezas de cada raza");        
+        System.out.println("    Escoger razas (Coloque el número): 1. Piratas, 2. Sirenas, 3. Hadas, 4. Fortalezas de cada raza");        
         Scanner leer = new Scanner(System.in);
 
         System.out.print("Primer Jugador");
