@@ -13,45 +13,49 @@ import parcial.razas.Razas;
  */
 public class Juego {
 
-    Fase fase = new Fase(1);
+    public int fase = 1;
     Menu menu = Menu.getInstance();
 
     public Juego() {
     }
 
-    public int inicioJuego(Razas j1, Razas j2) {
-        while (j1.mostrarCentro() != "null" && j2.mostrarCentro() != "null") {
+    public void inicioJuego(Razas j1, Razas j2) {
+        while (true) {
             System.out.println("");
-            System.out.println("    *********** FASE: " + fase.getFase() + " ***********");
-            System.out.print("    Turno del Jugador 1");            
+            System.out.println("    *********** FASE: " + fase + " ***********");
+            System.out.print("    Turno del Jugador 1");
             System.out.println(j1.toString());
             System.out.println(j1.mostrarCentro());
-            j1.fasesEspera(fase.getFase());            
+            j1.fasesEspera(fase);
             j1.recolectarAux();
-            
-            menu.mostrar(j1,j2, fase.getFase());
+
+            menu.mostrar(j1, j2, fase);
             System.out.println(j1.mostrarCentro());
-            
+            j1.mostrar();
+
+            if (j2.finalJuego()) {
+                System.err.println("______________Ganador: Jugador 1______________");
+                break;
+            }
+
             System.out.println("");
-            System.out.println("    *********** FASE: " + fase.getFase() + " ***********");            
-            System.out.print("    Turno del Jugador 2");            
+            System.out.println("    *********** FASE: " + fase + " ***********");
+            System.out.print("    Turno del Jugador 2");
             System.out.println(j2.toString());
             System.out.println(j2.mostrarCentro());
-            j2.fasesEspera(fase.getFase());
+            j2.fasesEspera(fase);
             j2.recolectarAux();
-            
-            menu.mostrar(j2,j1, fase.getFase());
-            System.out.println(j2.mostrarCentro());
-            
 
-            fase.setFase(fase.getFase() + 1);
+            menu.mostrar(j2, j1, fase);
+            System.out.println(j2.mostrarCentro());
+            j2.mostrar();
+
+            if (j1.finalJuego()) {
+                System.err.println("______________Ganador: Jugador 2______________");
+                break;
+            }
+
+            fase = fase + 1;
         }
-        if ("null".equals(j1.mostrarCentro())) {
-            return 2;
-        }
-        if ("null".equals(j2.mostrarCentro())) {
-            return 1;
-        }
-        return 0;
     }
 }

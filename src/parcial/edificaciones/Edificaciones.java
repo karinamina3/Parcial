@@ -10,7 +10,8 @@ package parcial.edificaciones;
  * @author Karina Mina <https://github.com/karinamina3>
  */
 public interface Edificaciones {
-
-//    void generar();
-
+    
+    void recibirAtaque(int ataque);
+    
+    int getVida();
 }

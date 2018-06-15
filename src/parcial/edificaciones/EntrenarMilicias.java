@@ -17,12 +17,25 @@ public class EntrenarMilicias implements Edificaciones {
         this.vida = vida;        
     }
 
+    @Override
     public int getVida() {
         return vida;
     }
 
     public void setVida(int vida) {
         this.vida = vida;
-    }    
+    } 
+    
+    @Override
+    public String toString(){
+        return "Edificación de Entrenar Milicias";
+    }
+    
+    @Override
+    public void recibirAtaque(int ataque) {
+        if (vida > 0) {
+            setVida(getVida() - ataque);
+        }
+    }
 
 }

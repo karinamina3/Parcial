@@ -18,6 +18,7 @@ public class Tipo1 implements Vehiculos{
         this.ataque = ataque;
     }
 
+    @Override
     public int getVida() {
         return vida;
     }
@@ -32,20 +33,22 @@ public class Tipo1 implements Vehiculos{
 
     public void setAtaque(int ataque) {
         this.ataque = ataque;
+    }        
+    
+    @Override
+    public String toString(){
+        return "Vehículo 1";
     }
     
     @Override
     public int atacar() {
-        System.out.println("Piuuu piu");
-        return ataque;
+        return this.ataque;
     }
     
-    @Override 
-    public boolean vida(){
-        if(vida > 0) {
-            return true;
+    @Override
+    public void recibirAtaque(int ataque) {
+        if (vida > 0) {
+            setVida(getVida() - ataque);
         }
-        return false;
     }
-    
 }

@@ -43,8 +43,7 @@ public class Parcial {
 //        System.out.println(j2);
 
         Juego juego = new Juego();
-        juego.inicioJuego(j1, j2);
-//        System.out.println("El jugador ganador es: " + juego.inicioJuego(j1, j2));
+        juego.inicioJuego(j1, j2);        
     }
 
     public static int escogerRaza() {

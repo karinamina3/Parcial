@@ -31,7 +31,7 @@ public class Menu {
         System.out.println("");
         System.out.println("--- MENÚ PRINCIPAL ---");
         System.out.println("1. Construir");
-        System.out.println("2. Atacar/Defender");        
+        System.out.println("2. Atacar/Defender");
         System.out.println("3. Mejorar Nivel del Centro de Mando");
         System.out.println("4. Recolectar Recursos");
         System.out.println("5. Generar Recursos");
@@ -41,6 +41,8 @@ public class Menu {
     public void mostrar(Razas raza1, Razas raza2, int fase) {
         int opcion = 7;
         int flag = 1;
+        int flag2 = 1;
+        int flag3 = 1;
         Scanner leer = new Scanner(System.in);
 
         while (opcion != 6) {
@@ -54,26 +56,35 @@ public class Menu {
                         raza1.construir(fase);
                         break;
                     case 2:
-                        raza1.atacar(raza2);
+                        if (flag == 1) {
+                            raza1.atacar(raza2);
+                        } else {
+                            System.out.println("Solo se puede atacar una vez por fase");
+                        }
                         break;
                     case 3:
                         System.out.println("    Mejoras disponibles: 1. Aumentar 10% la capacidad, 2. Aumentar 30% la capacidad, 3. Aumentar 50% la capacidad");
-                        if (raza1.mejorarCentro(mejora())){
+                        if (raza1.mejorarCentro(mejora())) {
                             System.out.println("Mejora realizada satisfactoriamente");
                         } else {
                             System.out.println("No se pudo realizar la mejora, recursos insuficientes");
                         }
                         break;
-                    case 4:                        
-                        if (flag == 1){
+                    case 4:
+                        if (flag2 == 1) {
                             raza1.recolectarRecurso(1);
-                            flag = 0;
+                            flag2 = 0;
                         } else {
                             System.out.println("Solo se puede recolectar recursos una vez por fase");
-                        }                        
+                        }
                         break;
                     case 5:
-                        raza1.generarRecurso(1);
+                        if (flag3 == 1) {
+                            raza1.generarRecurso(1);
+                            flag3 = 0;
+                        } else {
+                            System.out.println("Solo se puede recolectar recursos una vez por fase");
+                        }
                         break;
                     case 6:
                         break;

@@ -9,22 +9,23 @@ package parcial.milicias;
  *
  * @author Karina Mina <https://github.com/karinamina3>
  */
-public class Especialistas implements Milicias{
-    
+public class Especialistas implements Milicias {
+
     private int vida, ataque;
-    
-    public Especialistas(int vida, int ataque) {       
+
+    public Especialistas(int vida, int ataque) {
         this.vida = vida;
         this.ataque = ataque;
     }
 
+    @Override
     public int getVida() {
         return vida;
     }
 
     public void setVida(int vida) {
         this.vida = vida;
-    }   
+    }
 
     public int getAtaque() {
         return ataque;
@@ -32,23 +33,22 @@ public class Especialistas implements Milicias{
 
     public void setAtaque(int ataque) {
         this.ataque = ataque;
-    }        
-
+    }
+ 
+    @Override
+    public String toString(){
+        return "Especialista";
+    }
+    
     @Override
     public int atacar() {
-//        if (fases == 0){
-            System.out.println("Piuuu piu");
-            return ataque;
-//        }
-//        return 0;
+        return this.ataque;
     }
-
+    
     @Override
-    public boolean vida() {
-        if(vida > 0) {
-            return true;
+    public void recibirAtaque(int ataque) {
+        if (vida > 0) {
+            setVida(getVida() - ataque);
         }
-        return false;
     }
-        
 }

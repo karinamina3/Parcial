@@ -18,6 +18,7 @@ public class RecolectarRecurso implements Edificaciones {
         this.tipo = tipo;
     }
 
+    @Override
     public int getVida() {
         return vida;
     }
@@ -42,4 +43,15 @@ public class RecolectarRecurso implements Edificaciones {
         this.recurso = recurso;
     }
 
+     @Override
+    public String toString(){
+        return "Edificación de Recolectar Recuso";
+    }
+    
+    @Override
+    public void recibirAtaque(int ataque) {
+        if (vida > 0) {
+            setVida(getVida() - ataque);
+        }
+    }
 }

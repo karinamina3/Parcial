@@ -9,8 +9,12 @@ package parcial.milicias;
  *
  * @author Karina Mina <https://github.com/karinamina3>
  */
-public interface Milicias {   
-    int atacar();
-    boolean vida();
+public interface Milicias {
     
+    int atacar();
+    
+    void recibirAtaque(int ataque);
+    
+    int getVida();
+          
 }

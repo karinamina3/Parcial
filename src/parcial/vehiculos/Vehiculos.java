@@ -9,7 +9,11 @@ package parcial.vehiculos;
  *
  * @author Karina Mina <https://github.com/karinamina3>
  */
-public interface Vehiculos{
+public interface Vehiculos {
+    
     int atacar();
-    boolean vida();
+    
+    void recibirAtaque(int ataque);
+    
+    int getVida();
 }

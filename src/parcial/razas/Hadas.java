@@ -30,8 +30,8 @@ import parcial.vehiculos.Vehiculos;
 public class Hadas implements Razas {
 
     private final String nombre = "Hadas";
-
-    private int polvosHadas = 100, estrellas = 80, pociones = 60;
+//    private int polvosHadas = 500, estrellas = 400, pociones = 300;
+    private int polvosHadas = 2000, estrellas = 1500, pociones = 1000;
     private int tope1 = 10000, tope2 = 5000, tope3 = 3000;
     private final CentroMando centro = new CentroMando(100, polvosHadas, estrellas, pociones, tope1, tope2, tope3);
 
@@ -95,7 +95,7 @@ public class Hadas implements Razas {
 
     @Override
     public void mostrar() {
-        System.out.println("Total de elementos creados:");
+        System.out.println("");
         edificaciones.forEach((e) -> {
             System.out.println("    Edificaciones: " + e.toString());
         });
@@ -161,8 +161,9 @@ public class Hadas implements Razas {
     public String mostrarCentro() {
         if (centro.getVida() > 0) {
             return "Polvos Hadas: " + centro.getRecurso1() + " Estrellas: " + centro.getRecurso2() + " Pociones: " + centro.getRecurso3();
+        } else {
+            return "fin";
         }
-        return "null";
     }
 
     @Override
@@ -185,6 +186,7 @@ public class Hadas implements Razas {
                     case 1:
                         if (poderConstruirEdificios(250, 150)) {
                             System.out.println("    Escoger tipo de Edificación: 1. Recolectar Recurso, 2. Generar Recurso, 3. Entrenar Milicia, 4. Construir Vehículo");
+                            System.out.println("        Costo: 250 polvos de hadas y 150 estrellas");
                             factory = FactoryProducer.getFactory(1);
                             int aux = cuatroOpciones();
                             int espera = 1;
@@ -205,6 +207,7 @@ public class Hadas implements Razas {
                     case 2:
                         if (poderConstruirMilicias(250, 150)) {
                             System.out.println("    Escoger tipo de Milicia: 1. Escuadrón, 2. Especialistas");
+                            System.out.println("        Costo: 250 polvos de hadas y 150 pociones");
                             factory = FactoryProducer.getFactory(2);
                             int aux = dosOpciones();
                             int espera = 3;
@@ -234,11 +237,18 @@ public class Hadas implements Razas {
                         break;
                     case 3:
                         if (poderConstruirVehiculos(250, 150)) {
-                            System.out.println("    Escoger tipo de Vehículo: 1. Débil , 2. Fuerte");
+                            System.out.println("    Escoger tipo de Vehículo: 1. Primario , 2. Secundario");
+                            System.out.println("        Costo: 250 estrellas y 150 pociones");
                             factory = FactoryProducer.getFactory(3);
+                            int aux = dosOpciones();
                             int espera = 2;
-                            this.vehiculosEspera.put(factory.getVehiculos(dosOpciones(), 30, 10), espera + fase);
-                            System.out.println("El vehículo estará listo dentro de " + espera + " fase");
+                            if (aux == 1) {
+                                this.vehiculosEspera.put(factory.getVehiculos(aux, 40, 20), espera + fase);
+                                System.out.println("El vehículo estará listo dentro de " + espera + " fase");
+                            } else {
+                                this.vehiculosEspera.put(factory.getVehiculos(aux, 30, 10), espera + fase);
+                                System.out.println("El vehículo estará listo dentro de " + espera + " fase");
+                            }
                         } else {
                             System.out.println("No se puede construir, insuficientes recursos o no ha creado un edificio de Construir Vehículos");
                         }
@@ -255,12 +265,11 @@ public class Hadas implements Razas {
         }
     }
 
-      @Override
+    @Override
     public void fasesEspera(int fase) {
 //        System.out.println(edificacionesEspera);
 //        System.out.println(miliciasEspera);
-//        System.out.println(vehiculosEspera);
-//        mostrar();
+//        System.out.println(vehiculosEspera);        
 
         for (Iterator<Map.Entry<Edificaciones, Integer>> it = edificacionesEspera.entrySet().iterator(); it.hasNext();) {
             Map.Entry<Edificaciones, Integer> x = it.next();
@@ -288,7 +297,7 @@ public class Hadas implements Razas {
             }
         }
     }
-    
+
     @Override
     public void opcionesConstruir() {
         System.out.println("");
@@ -318,6 +327,34 @@ public class Hadas implements Razas {
                         return 3;
                     case 4:
                         return 4;
+                    default:
+                        System.out.println("Por favor, ingrese una opción válida");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor, ingrese un número");
+                leer.nextLine();
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public int tresOpciones() {
+        int opcion = 4;
+        Scanner leer = new Scanner(System.in);
+
+        while (opcion != 3) {
+            System.out.print(": ");
+            try {
+                opcion = leer.nextInt();
+
+                switch (opcion) {
+                    case 1:
+                        return 1;
+                    case 2:
+                        return 2;
+                    case 3:
+                        return 3;
                     default:
                         System.out.println("Por favor, ingrese una opción válida");
                 }
@@ -374,12 +411,12 @@ public class Hadas implements Razas {
             setPolvosHadas(this.polvosHadas - recurso);
             setEstrellas(this.estrellas - recurso);
             setPociones(this.pociones - recurso);
-            
+
             return true;
         }
         return false;
     }
-    
+
     @Override
     public void recolectarAux() {
         for (Edificaciones e : edificaciones) {
@@ -394,7 +431,7 @@ public class Hadas implements Razas {
         }
     }
 
-@Override
+    @Override
     public void recolectarRecurso(int flag) {
 //        System.out.println("1: " + recolecta);
 //        System.out.println("2: " + recolecta2);
@@ -429,14 +466,11 @@ public class Hadas implements Razas {
     }
 
     @Override
-    public void generarRecurso(int flag2) {
+    public void generarRecurso(int flag) {
         if (edificaciones.isEmpty()) {
-            System.out.println("No se puede recolectar recursos, cree una edificación Generar Recurso antes");
+            System.out.println("No se puede generar recursos, cree una edificación Generar Recurso antes");
         } else {
-            if (flag2 == 0) {
-                System.out.println("Solo se puede generar recursos una vez por fase");
-            }
-            if (flag2 == 1) {
+            if (flag == 1) {
                 for (Edificaciones e : edificaciones) {
                     if (e instanceof GenerarRecurso) {
 //                        System.out.println("Recurso 3 antes: " + getMaderas());
@@ -444,17 +478,228 @@ public class Hadas implements Razas {
                         setPociones(this.pociones + ((GenerarRecurso) e).getRecurso());
                         centro.setRecurso3(centro.getRecurso3() + ((GenerarRecurso) e).getRecurso());
 //                        System.out.println("Recurso 3 después: " + getMaderas());
-                        flag2 = 0;
+                        flag = 0;
                     }
                 }
             }
-            if (flag2 == 1) {
-                System.out.println("No se puede recolectar recursos, cree una edificación Generar Recurso antes");
+            if (flag == 1) {
+                System.out.println("No se puede generar recursos, cree una edificación Generar Recurso antes");
             }
         }
     }
 
     @Override
     public void atacar(Object r) {
+        if (r instanceof Razas) {  //poder acceder a los métodos
+            if (this.milicias.isEmpty() && this.vehiculos.isEmpty()) {
+                System.out.println("No puede atacar, cree una milicia o algún vehículo");
+            } else {
+                System.out.println("    Contrincante" + r.toString());
+                System.out.println("¿Qué quiere atacar? 1. Edificaciones, 2. Milicas, 3. Vehículos");
+                int aux = tresOpciones();
+                System.out.println("    Escoge que quiere enviar a atacar: ");
+                System.out.println("        1. Milicias, 2. Vehículos");
+                int aux2 = dosOpciones();
+                if (aux2 == 1) {
+                    if (this.milicias.isEmpty()) {
+                        System.out.println("No tiene ninguna milicia preparada");
+                    } else {
+                        ((Razas) r).recibirAtaque(this.milicias.get(0), aux);
+                    }
+                } else {
+                    if (this.vehiculos.isEmpty()) {
+                        System.out.println("No tiene ningún vehículo construido");
+                    } else {
+                        ((Razas) r).recibirAtaque(this.vehiculos.get(0), aux);
+                    }
+                }
+            }
+        }
     }
+
+    @Override
+    public void recibirAtaque(Object atacador, int seleccion) {
+        int enumeracion = 1;
+        switch (seleccion) {
+            case 1:
+                if (this.edificaciones.isEmpty() && finalJuego()) {
+                    System.out.println("    Se atacará el Centro de Mando del contrincante, porque no tiene más edificios");
+                    if (centro.getVida() > 0) {
+                        if (atacador instanceof Milicias) {
+                            System.out.println("Vida antes:" + centro.getVida());
+                            System.out.println("    Atacando...");
+                            centro.setVida(centro.getVida() - ((Milicias) atacador).atacar());
+                            System.out.println("Vida después: " + centro.getVida());
+                        }
+                        if (atacador instanceof Vehiculos) {
+                            System.out.println("Vida antes:" + centro.getVida());
+                            System.out.println("    Atacando...");
+                            centro.setVida(centro.getVida() - ((Vehiculos) atacador).atacar());
+                            System.out.println("Vida después: " + centro.getVida());
+                        }
+                    }
+                } else {
+                    System.out.println("    Escoge que edificación quieres atacar:");
+                    for (Edificaciones e : this.edificaciones) {
+                        System.out.println(enumeracion + ". " + e.toString());
+                        enumeracion++;
+                    }
+                    int opcion;
+                    Scanner leer = new Scanner(System.in);
+
+                    do {
+                        try {
+                            System.out.print(": ");
+                            opcion = leer.nextInt();
+                            if (opcion > 0 && opcion < this.edificaciones.size() + 1) {
+                                break;
+                            } else {
+                                System.out.println("Por favor, ingrese una opción válida");
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Por favor, ingrese un número");
+                            leer.nextLine();
+                        }
+                    } while (true);
+
+                    Edificaciones e = this.edificaciones.get(opcion - 1);
+
+                    if (e.getVida() > 0) {
+                        if (e instanceof Edificaciones) {
+                            if (atacador instanceof Milicias) {
+                                System.out.println("Vida antes: " + e.getVida());
+                                System.out.println("    Atacando...");
+                                e.recibirAtaque(((Milicias) atacador).atacar());
+                                System.out.println("Vida después: " + e.getVida());
+                                if (e.getVida() < 0) {
+                                    this.edificaciones.remove(e);
+                                }
+                            }
+                            if (atacador instanceof Vehiculos) {
+                                System.out.println("Vida antes: " + e.getVida());
+                                System.out.println("    Atacando...");
+                                e.recibirAtaque(((Vehiculos) atacador).atacar());
+                                System.out.println("Vida después: " + e.getVida());
+                                if (e.getVida() < 0) {
+                                    this.edificaciones.remove(e);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 2:
+                if (this.milicias.isEmpty()) {
+                    System.out.println("    El contrincante no tiene milicias para atacar");
+                } else {
+                    System.out.println("    Escoge que milicia quieres atacar:");
+                    for (Milicias m : this.milicias) {
+                        System.out.println(enumeracion + ". " + m.toString());
+                        enumeracion++;
+                    }
+                    int opcion;
+                    Scanner leer = new Scanner(System.in);
+
+                    do {
+                        try {
+                            System.out.print(": ");
+                            opcion = leer.nextInt();
+                            if (opcion > 0 && opcion < this.milicias.size() + 1) {
+                                break;
+                            } else {
+                                System.out.println("Por favor, ingrese una opción válida");
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Por favor, ingrese un número");
+                            leer.nextLine();
+                        }
+                    } while (true);
+
+                    Milicias m = this.milicias.get(opcion - 1);
+
+                    if (m.getVida() > 0) {
+                        if (m instanceof Milicias) {
+                            if (atacador instanceof Milicias) {
+                                System.out.println("Vida antes: " + m.getVida());
+                                System.out.println("    Atacando...");
+                                m.recibirAtaque(((Milicias) atacador).atacar());
+                                System.out.println("Vida después: " + m.getVida());
+                                if (m.getVida() < 0) {
+                                    this.milicias.remove(m);
+                                }
+                            }
+                            if (atacador instanceof Vehiculos) {
+                                System.out.println("Vida antes: " + m.getVida());
+                                System.out.println("    Atacando...");
+                                m.recibirAtaque(((Vehiculos) atacador).atacar());
+                                System.out.println("Vida después: " + m.getVida());
+                                if (m.getVida() < 0) {
+                                    this.milicias.remove(m);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 3:
+                if (this.vehiculos.isEmpty()) {
+                    System.out.println("    El contrincante no tiene vehiculos para atacar");
+                } else {
+                    System.out.println("    Escoge que vehículo quieres atacar:");
+                    for (Vehiculos v : this.vehiculos) {
+                        System.out.println(enumeracion + ". " + v.toString());
+                        enumeracion++;
+                    }
+                    int opcion;
+                    Scanner leer = new Scanner(System.in);
+
+                    do {
+                        try {
+                            System.out.print(": ");
+                            opcion = leer.nextInt();
+                            if (opcion > 0 && opcion < this.vehiculos.size() + 1) {
+                                break;
+                            } else {
+                                System.out.println("Por favor, ingrese una opción válida");
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Por favor, ingrese un número");
+                            leer.nextLine();
+                        }
+                    } while (true);
+
+                    Vehiculos v = this.vehiculos.get(opcion - 1);
+
+                    if (v.getVida() > 0) {
+                        if (v instanceof Vehiculos) {
+                            if (atacador instanceof Milicias) {
+                                System.out.println("Vida antes: " + v.getVida());
+                                System.out.println("    Atacando...");
+                                v.recibirAtaque(((Milicias) atacador).atacar());
+                                System.out.println("Vida después: " + v.getVida());
+                                if (v.getVida() < 0) {
+                                    this.vehiculos.remove(v);
+                                }
+                            }
+                            if (atacador instanceof Vehiculos) {
+                                System.out.println("Vida antes: " + v.getVida());
+                                System.out.println("    Atacando...");
+                                v.recibirAtaque(((Vehiculos) atacador).atacar());
+                                System.out.println("Vida después: " + v.getVida());
+                                if (v.getVida() < 0) {
+                                    this.vehiculos.remove(v);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public boolean finalJuego() {
+        return centro.getVida() <= 0;
+    }
+
 }

@@ -14,10 +14,11 @@ public class Tipo2 implements Vehiculos {
     private int vida, ataque;
 
     public Tipo2(int vida, int ataque) {
-        this.vida = vida + 50;        
+        this.vida = vida + 50;
         this.ataque = ataque;
     }
 
+    @Override
     public int getVida() {
         return vida;
     }
@@ -35,17 +36,19 @@ public class Tipo2 implements Vehiculos {
     }
 
     @Override
-    public int atacar() {
-        System.out.println("Piuuu piu");
-        return ataque;
+    public String toString() {
+        return "Vehículo 2";
     }
 
     @Override
-    public boolean vida() {
-        if (vida > 0) {
-            return true;
-        }
-        return false;
+    public int atacar() {
+        return this.ataque;
     }
     
+    @Override
+    public void recibirAtaque(int ataque) {
+        if (vida > 0) {
+            setVida(getVida() - ataque);
+        }
+    }
 }

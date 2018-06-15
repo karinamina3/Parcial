@@ -14,15 +14,28 @@ public class ConstruirVehiculos implements Edificaciones {
     private int vida;
 
     public ConstruirVehiculos(int vida) {
-        this.vida = vida;        
+        this.vida = vida;
     }
 
+    @Override
     public int getVida() {
         return vida;
     }
-
+  
     public void setVida(int vida) {
         this.vida = vida;
+    }
+
+    @Override
+    public String toString() {
+        return "Edificación de Construir Vehículos";
+    }
+
+    @Override
+    public void recibirAtaque(int ataque) {
+        if (vida > 0) {
+            setVida(getVida() - ataque);
+        }
     }
 
 }

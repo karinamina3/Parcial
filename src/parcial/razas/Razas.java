@@ -9,10 +9,10 @@ package parcial.razas;
  *
  * @author Karina Mina <https://github.com/karinamina3>
  */
-public interface Razas <R> {
+public interface Razas<R> {
 
     void mostrar();
-    
+
     boolean poderConstruirEdificios(int costor1, int costor2);
 
     boolean poderConstruirMilicias(int costor1, int costor2);
@@ -24,22 +24,28 @@ public interface Razas <R> {
     String mostrarCentro();
 
     void construir(int fase);
-    
+
     void fasesEspera(int fase);
-    
-    void opcionesConstruir();    
+
+    void opcionesConstruir();
 
     int cuatroOpciones();
 
+    int tresOpciones();
+
     int dosOpciones();
-            
+
     boolean mejorarCentro(double mejora);
-    
+
     void recolectarAux();
-    
+
     void recolectarRecurso(int flag);
-            
-    void generarRecurso(int flag2);
-    
+
+    void generarRecurso(int flag);
+
     void atacar(R r);
+
+    void recibirAtaque(R atacador, int seleccion);
+
+    boolean finalJuego();
 }

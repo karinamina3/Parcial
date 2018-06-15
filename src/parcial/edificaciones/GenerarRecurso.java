@@ -17,6 +17,7 @@ public class GenerarRecurso implements Edificaciones {
         this.vida = vida;    
     }
 
+    @Override
     public int getVida() {
         return vida;
     }
@@ -33,4 +34,15 @@ public class GenerarRecurso implements Edificaciones {
         this.recurso = recurso;
     }
         
+    @Override
+    public String toString(){
+        return "Edificación de Generar Recuso";
+    }
+    
+    @Override
+    public void recibirAtaque(int ataque) {
+        if (vida > 0) {
+            setVida(getVida() - ataque);
+        }
+    }
 }
